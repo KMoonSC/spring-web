@@ -1,6 +1,6 @@
 package com.myspring.config;
 
-import com.myspring.security.MyUserService;
+import com.myspring.security.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,15 +16,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private MyUserService myUserService;
+    private MyUserDetailService myUserDetailService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/home").permitAll();
+        http
+                //.formLogin().and() // 无视图的javaWeb就不需要登录页面了
+                .authorizeRequests()
+                //.antMatchers("/account").hasAuthority("ROLE_USER")
+                .antMatchers("/home", "/login", "/account").permitAll()
+                //.anyRequest().authenticated()
+                .and()
+                .csrf().disable()
+                .httpBasic();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserService);
+        // 验证身份接口自定义实现类
+        auth.userDetailsService(myUserDetailService);
     }
 }
