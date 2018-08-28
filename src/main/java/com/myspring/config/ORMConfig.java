@@ -2,18 +2,11 @@ package com.myspring.config;
 
 import lombok.Data;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -23,9 +16,9 @@ import java.util.Properties;
 /**
  * created by xuyuan 18/8/26
  */
+@Data
 @Configuration
 @PropertySource({"classpath:application.properties"})
-@Data
 @EnableTransactionManagement
 public class ORMConfig {
 
@@ -47,16 +40,7 @@ public class ORMConfig {
     @Value("jdbc.hibernate.format_sql")
     private String formatSql;
 
-    /**
-     * 异常转换
-     * @return
-     */
-//    @Bean
-//    public BeanPostProcessor postProcessor() {
-//        return new PersistenceExceptionTranslationPostProcessor();
-//    }
-
-
+    // hibernate
     @Bean(name="sessionFactory")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sfb = new LocalSessionFactoryBean();
@@ -93,46 +77,9 @@ public class ORMConfig {
 //        return txManager;
 //    }
 
-    @Bean
+    @Bean(name = "hibernateTransactionManager")
     public DataSourceTransactionManager dataSourceTransactionManager() {
         return new DataSourceTransactionManager(dataSource());
     }
 
-//    public String getDriverClassName() {
-//        return driverClassName;
-//    }
-//
-//    public String getUrl() {
-//        return url;
-//    }
-//
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//
-//
-//    @Value("${jdbc.driverClassName}")
-//    public void setDriverClassName(String driverClassName) {
-//        this.driverClassName = driverClassName;
-//    }
-//
-//    @Value("${jdbc.url}")
-//    public void setUrl(String url) {
-//        this.url = url;
-//    }
-//
-//    @Value("${jdbc.username}")
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    @Value("${jdbc.password}")
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
 }
