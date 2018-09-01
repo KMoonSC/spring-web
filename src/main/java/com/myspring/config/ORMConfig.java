@@ -37,7 +37,7 @@ public class ORMConfig {
     private String showSql;
     @Value("${jdbc.hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
-    @Value("jdbc.hibernate.format_sql")
+    @Value("${jdbc.hibernate.format_sql}")
     private String formatSql;
 
     // hibernate
