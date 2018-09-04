@@ -1,6 +1,7 @@
 package com.myspring.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.myspring.event.Publisher;
 import com.myspring.repo.UserAdminRepo;
 import com.myspring.repo.UserAdminRepoImpl;
 import com.myspring.repo.UserAdminRepository;
@@ -57,5 +58,14 @@ public class HomeController {
     @GetMapping("get_serve_by_rest")
     public String getServeByRest() {
         return restTestService.getServe();
+    }
+
+    @Autowired
+    private Publisher publisher;
+
+    @GetMapping("send_event")
+    public void sendRequestEvent() {
+        publisher.publishRequestEvent("请求");
+        System.out.println("发布结束");
     }
 }
